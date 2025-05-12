@@ -1,3 +1,16 @@
 from django.contrib import admin
+from .models import Post, Tag, Profile, PostTag
 
-# Register your models here.
+# Postni admin panelida ko'rsatish
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'author')
+    search_fields = ('title', 'content')
+
+# Tagni admin panelida ko'rsatish
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+admin.site.register(Post, PostAdmin)
+admin.site.register(Tag, TagAdmin)
+admin.site.register(Profile)
+admin.site.register(PostTag)
