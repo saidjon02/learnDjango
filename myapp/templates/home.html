@@ -1,32 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Home Page</title>
-</head>
-<body>
-    <h1>Narxi 100 dan katta mahsulotlar</h1>
+  </head>
+  <body>
+    <h2>Filtered Products (narxi > 50)</h2>
     <ul>
-    {% for product in expensive_products %}
-        <li>{{ product.name }} — ${{ product.price }}</li>
-    {% empty %}
-        <li>Hech qanday mahsulot topilmadi.</li>
-    {% endfor %}
+      {% for product in filtered_products %}
+      <li>{{ product.name }} - ${{ product.price }}</li>
+      {% endfor %}
     </ul>
 
-    <h1>'Electronics' bo'lmagan kategoriyalar</h1>
+    <h2>Excluded Products (nomida "apple" yo‘q)</h2>
     <ul>
-    {% for category in non_electronics_categories %}
-        <li>{{ category.name }}</li>
-    {% empty %}
-        <li>Hech qanday kategoriya yo'q.</li>
-    {% endfor %}
+      {% for product in excluded_products %}
+      <li>{{ product.name }}</li>
+      {% endfor %}
     </ul>
 
-    <h1>Kategoriyalar va ularning mahsulotlar soni</h1>
+    <h2>Categories with Product Count</h2>
     <ul>
-    {% for category in categories_with_counts %}
-        <li>{{ category.name }} - {{ category.product_count }} ta mahsulot</li>
-    {% endfor %}
+      {% for cat in categories_with_count %}
+      <li>{{ cat.name }}: {{ cat.product_count }} ta product</li>
+      {% endfor %}
     </ul>
-</body>
+
+    <h2>O‘rtacha narx: ${{ average_price.price__avg }}</h2>
+  </body>
 </html>
