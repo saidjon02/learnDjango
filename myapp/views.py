@@ -1,24 +1,54 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Tag
-from .forms import PostForm, TagForm
+# store/views.py
+from django.http import HttpResponse
+from django.shortcuts import render
+from .models import Product, Category
+from django.db.models import Count
 
-# Post yaratish
-def post_list(request):
-    posts = Post.objects.all()  # Barcha postlarni olish
-    return render(request, 'post_list.html', {'posts': posts})
+def queryset_examples(request):
+    # 1. Barcha productlarni olish
+    all_products = Product.objects.all()
 
-def create_post(request):
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('post_list')  # Listga qaytish
-    else:
-        form = PostForm()
-    return render(request, 'create_post.html', {'form': form})
+    # 2. Narxi 100 dan katta productlar
+    expensive_products = Product.objects.filter(price__gt=100)
 
-# Postni ko'rsatish
-def post_detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    tags = post.tag_set.all()  # Postga tegishli barcha taglarni olish
-    return render(request, 'post_detail.html', {'post': post, 'tags': tags})
+    # 3. “Apple” nomli productlar
+    apple_products = Product.objects.filter(name="Apple")
+
+    # 4. Narxi 50 dan katta va kategoriya “food” bo‘lgan productlar
+    filtered_products = Product.objects.filter(price__gt=50, category__name="food")
+
+    # 5. Narxi 100 dan katta bo‘lganlarni chiqarib tashlash
+    cheap_products = Product.objects.exclude(price__gt=100)
+
+    # 6. annotate: Har bir kategoriyada nechta product borligini chiqarish
+    categories = Category.objects.annotate(product_count=Count('product'))
+
+    # Natijani ekranga chiqaramiz
+    result = "All products with price > 100:<br>"
+    for p in expensive_products:
+        result += f"- {p.name} | {p.price} so‘m<br>"
+
+    result += "<br>Category count:<br>"
+    for c in categories:
+        result += f"{c.name} => {c.product_count} ta product<br>"
+
+    return HttpResponse(result)
+
+
+def home(request):
+    # 1. filter(): Narxi 100 dan katta mahsulotlar
+    expensive_products = Product.objects.filter(price__gt=100)
+
+    # 2. exclude(): nomi 'Electronics' bo'lmagan kategoriyalar
+    non_electronics_categories = Category.objects.exclude(name="Electronics")
+
+    # 3. annotate(): har bir kategoriyadagi mahsulotlar soni
+    categories_with_counts = Category.objects.annotate(product_count=Count('product'))
+
+    context = {
+        'expensive_products': expensive_products,
+        'non_electronics_categories': non_electronics_categories,
+        'categories_with_counts': categories_with_counts,
+    }
+
+    return render(request, 'home.html', context)
