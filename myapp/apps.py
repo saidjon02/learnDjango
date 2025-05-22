@@ -6,4 +6,4 @@ class MyappConfig(AppConfig):
     name = 'myapp'
 
     def ready(self):
-        import myapp.signals  # signal'ni shu yerda yuklaymiz
+        import myapp.signals
