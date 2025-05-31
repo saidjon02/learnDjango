@@ -114,3 +114,9 @@ SESSION_COOKIE_SECURE = False       # Session cookie HTTPSsiz ishlaydi
 CSRF_COOKIE_HTTPONLY = True         # CSRF cookie JavaScript orqali ko‘rinmaydi
 SECURE_BROWSER_XSS_FILTER = True    # XSS hujumlariga qarshi filtr
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
