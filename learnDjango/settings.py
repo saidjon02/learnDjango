@@ -18,15 +18,23 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'rest_framework',
     'myapp',
+    'rest_framework_simplejwt',
+    'corsheaders',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
 
+# CORS sozlamalari (frontend bilan ishlash uchun)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # Frontend manzili (React yoki boshqa)
+]
+CORS_ALLOW_CREDENTIALS = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
