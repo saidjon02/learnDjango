@@ -1,1 +1,1 @@
-PS> web: gunicorn learnDjango.wsgi
+web: gunicorn learnDjango.wsgi
